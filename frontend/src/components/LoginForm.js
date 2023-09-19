@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-
+import axios from 'axios';
 
 const LoginForm = ({ setIsLoggedIn }) => {
 
@@ -25,13 +25,33 @@ const LoginForm = ({ setIsLoggedIn }) => {
 
     }
 
-    function submitHandler(event) {
+    // function submitHandler(event) {
+    //     event.preventDefault();
+
+
+    //     setIsLoggedIn(true);
+    //     toast.success("Logged In");
+    //     console.log("Printing the formData ");
+    //     console.log(formData)
+    //     navigate("/dashboard");
+    // }
+
+    async function submitHandler(event) {
         event.preventDefault();
-        setIsLoggedIn(true);
-        toast.success("Logged In");
-        console.log("Printing the formData ");
-        console.log(formData)
-        navigate("/dashboard");
+
+        try {
+            const response = await axios.post('http://localhost:4000/api/v1/login', formData);
+
+            if (response.status === 200) {
+                setIsLoggedIn(true);
+                toast.success("Logged In");
+                navigate("/dashboard");
+            } else {
+                toast.error(response.data.message || "Error logging in");
+            }
+        } catch (error) {
+            toast.error(error.response?.data?.message || "An error occurred while logging in. Please try again.");
+        }
     }
 
     return (
