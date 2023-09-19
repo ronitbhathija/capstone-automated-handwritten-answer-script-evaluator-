@@ -27,7 +27,7 @@ const Dashboard = ({ isLoggedIn }) => {
 
   return (
     <div className="flex h-full space-x-4">
-      <div className="bg-gray-900 w-1/4 p-8 h-screen">
+      <div className=" w-1/4 p-8 h-screen">
         <h2 className="text-3xl font-extrabold mb-8 text-white">Menu</h2>
         <ul>
           <li
@@ -56,7 +56,7 @@ const Dashboard = ({ isLoggedIn }) => {
           </li>
         </ul>
       </div>
-      <div className="w-3/4 h-full bg-gray-800 p-8">{renderComponent()}</div>
+      <div className="w-3/4 h-full  p-8">{renderComponent()}</div>
     </div>
   );
 };
