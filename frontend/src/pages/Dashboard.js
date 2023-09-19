@@ -1,10 +1,11 @@
+
 import React, { useState } from "react";
 import Item1 from "../components/Item1";
 import Item2 from "../components/Item2";
 import Item3 from "../components/Item3";
 import Item4 from "../components/Item4";
 
-const Home = ({ isLoggedIn }) => {
+const Dashboard = ({ isLoggedIn }) => {
   const [activeItem, setActiveItem] = useState("Item1");
 
   const renderComponent = () => {
@@ -22,50 +23,42 @@ const Home = ({ isLoggedIn }) => {
     }
   };
 
-  const isActive = (item) => (activeItem === item ? "bg-gray-700" : "");
+  const isActive = (item) => (activeItem === item ? "bg-gray-700 text-white" : "text-gray-400 hover:text-white");
 
   return (
-    <div className="flex h-full">
-      <div className="bg-gray-800 w-1/5 p-4">
-        <h2 className="text-xl font-bold mb-4 text-white">Menu</h2>
+    <div className="flex h-full space-x-4">
+      <div className="bg-gray-900 w-1/4 p-8 h-screen">
+        <h2 className="text-3xl font-extrabold mb-8 text-white">Menu</h2>
         <ul>
           <li
-            className={`mb-2 px-4 py-2 cursor-pointer rounded transition-all ${isActive(
-              "Item1"
-            )}`}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item1")}`}
             onClick={() => setActiveItem("Item1")}
           >
             📌 Item1
           </li>
           <li
-            className={`mb-2 px-4 py-2 cursor-pointer rounded transition-all ${isActive(
-              "Item2"
-            )}`}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item2")}`}
             onClick={() => setActiveItem("Item2")}
           >
             📘 Item2
           </li>
           <li
-            className={`mb-2 px-4 py-2 cursor-pointer rounded transition-all ${isActive(
-              "Item3"
-            )}`}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item3")}`}
             onClick={() => setActiveItem("Item3")}
           >
             📊 Item3
           </li>
           <li
-            className={`mb-2 px-4 py-2 cursor-pointer rounded transition-all ${isActive(
-              "Item4"
-            )}`}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item4")}`}
             onClick={() => setActiveItem("Item4")}
           >
             🖼️ Item4
           </li>
         </ul>
       </div>
-      <div className="w-4/5 h-full bg-gray-900 p-6">{renderComponent()}</div>
+      <div className="w-3/4 h-full bg-gray-800 p-8">{renderComponent()}</div>
     </div>
   );
 };
 
-export default Home;
+export default Dashboard;
