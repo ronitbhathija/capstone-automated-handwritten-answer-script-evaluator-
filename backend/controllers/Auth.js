@@ -2,6 +2,20 @@ const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
+const { spawn } = require('child_process');
+// const multer = require('multer');
+
+// const storage = multer.memoryStorage();  // Store the file in memory
+// const upload = multer({ storage: storage });
+
+const tesseract = require("node-tesseract-ocr");
+const config = {
+    lang: "eng",
+    oem: 1,
+    psm: 3
+}
+
+
 require("dotenv").config();
 
 
@@ -125,3 +139,114 @@ exports.login = async (req, res) => {
 
     }
 }
+
+function cleanOcrOutput(text) {
+    // Remove consecutive newlines
+    text = text.replace(/\r?\n\s*\r?\n/g, '\n');
+    // Trim the text
+    return text.trim();
+}
+
+exports.extracttext = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({
+                success: false,
+                message: 'no image given'
+            });
+        }
+
+        const image = req.file.buffer;
+        let text = await tesseract.recognize(image, config);
+
+        // Clean the recognized text
+        text = cleanOcrOutput(text);
+
+        return res.status(200).json({
+            success: true,
+            data: text
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: 'error in extracting text'
+        });
+    }
+}
+
+
+exports.calculatescore = async (req, res) => {
+    try {
+        const { myanswer, keyanswer } = req.body;
+
+        // console.log(myanswer);
+        // console.log(keyanswer);
+
+        // Path to the dummy Python script
+        const scriptPath = 'C://webtechnologies//capstone//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
+
+        const process = spawn('python', [scriptPath, myanswer, keyanswer]);
+
+        // Collect data from the Python script
+        let dataString = '';
+        process.stdout.on('data', (data) => {
+            dataString += data.toString();
+        });
+
+        // Handle the end of the Python script execution
+        process.stdout.on('end', () => {
+            return res.status(200).json({
+                success: true,
+                data: parseFloat(dataString.trim())  // Convert the string to a float
+            });
+        });
+
+        // Handle errors from the Python script
+        process.stderr.on('data', (data) => {
+            console.error(`Python error: ${data}`);
+            return res.status(500).json({
+                success: false,
+                message: 'Error processing similarity'
+            });
+        });
+
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json({
+            success: false,
+            message: 'Error in calculating score'
+        });
+    }
+}
+
+
+
+// exports.extracttext = async (req, res) => {
+//     try {
+//         if (!req.file) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: 'no image given'
+//             });
+//         }
+
+//         const image = req.file.buffer;
+//         const text = await tesseract.recognize(image, config);
+
+
+
+//         return res.status(200).json({
+//             success: true,
+//             data: text
+//         });
+
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).json({
+//             success: false,
+//             message: 'error in extracting text'
+//         });
+//     }
+// }
