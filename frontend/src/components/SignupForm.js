@@ -64,8 +64,8 @@ const SignupForm = ({ setIsLoggedIn }) => {
         }
 
         const accountData = {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
+            firstname: formData.firstName,
+            lastname: formData.lastName,
             email: formData.email,
             password: formData.password,
             role: accountType
