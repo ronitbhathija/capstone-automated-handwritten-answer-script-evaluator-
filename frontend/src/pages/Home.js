@@ -1,15 +1,3 @@
-// import React from 'react'
-
-// const Home = ({ isLoggedIn }) => {
-//   return (
-//     <div className='flex justify-center items-center text-white text-3xl h-full'>
-//       Home
-//     </div>
-//   )
-// }
-
-// export default Home
-
 
 import img1 from '../assets/img1.jpg';
 import img2 from '../assets/img2.jpg';
@@ -18,40 +6,51 @@ import React from 'react';
 
 const Home = () => {
   // Placeholder images for the education theme
-  const educationImages = [
-    img1, img2, img3
+  const educationImages = [img1, img2, img3];
+
+  const summaries = [
+    "Handwritten Answer Script Evaluation provides an innovative way to assess students' written responses. Utilizing advanced technologies like image processing and machine learning, this method translates handwritten content into a digital format. It eliminates the traditional constraints of manual checking, offering a more efficient and unbiased evaluation process.",
+    "Traditional methods of handwritten answer script evaluation often suffer from inconsistencies due to human errors, bias, or fatigue. Different evaluators might interpret answers differently, leading to variance in marks awarded. Moreover, deciphering varied handwriting styles can further complicate the process. Such challenges underline the need for a more standardized and automated approach.",
+    "Automated systems have revolutionized the grading process by significantly reducing the time taken to evaluate answer scripts. Leveraging algorithms and digital tools, these systems can instantly analyze and grade written content. Besides speed, they ensure consistent and objective evaluations, making results available to students in record time."
   ];
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-8 min-h-screen">
       {/* Header */}
-      <header className="text-center p-4 bg-blue-600 text-white">
-        <h1 className="text-3xl">Handwritten Answer Script Evaluation</h1>
+      <header className="text-center p-6 bg-transparent text-white mb-8 rounded-lg shadow-xl">
+        <h1 className="text-4xl font-bold">Handwritten Answer Script Evaluation</h1>
       </header>
+
+      {/* Image Carousel */}
+      <div className="carousel relative w-full h-1/2 md:h-1/3 mb-8 overflow-hidden">
+        {educationImages.map((image, index) => (
+          <img key={index} src={image} alt="Education related" className="w-full h-full absolute transition-opacity duration-500" style={{ opacity: index === 0 ? '1' : '0' }} />
+        ))}
+      </div>
 
       {/* Main content */}
       <main className="my-8">
-        {/* Images */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {educationImages.map((image, index) => (
-            <img key={index} src={image} alt="Education related" className="w-full h-auto shadow-md rounded-lg" />
-          ))}
-        </div>
-
-        {/* Summary */}
-        <div className="mt-8 p-4 bg-gray-100 rounded-lg shadow-md">
-          <p>An automated paper evaluation solution that utilizes machine learning algorithms, image processing, and natural language processing to streamline the grading of subjective handwritten answers. By automating the conversion of scanned documents to text and employing a transformer model for answer comparison, the system aims to save time for educators, enhance grading accuracy and consistency. This innovative approach addresses the challenges of manual evaluation, ensuring a faster, fairer, and more efficient grading process while promoting student learning and growth.</p>
-        </div>
+        {/* Alternating Images and Text */}
+        {educationImages.map((image, index) => (
+          <div className={`flex flex-wrap mb-8 ${index % 2 === 1 ? 'flex-row-reverse' : ''}`}>
+            <div className="w-full md:w-1/2 p-4">
+              <img src={image} alt="Education related" className="w-full h-auto shadow-lg rounded-lg transform transition-transform duration-300 hover:scale-105" />
+            </div>
+            <div className="w-full md:w-1/2 p-4 flex items-center">
+              <p className="bg-gray-900 text-white p-4 rounded-lg shadow-md leading-relaxed">
+                {summaries[index]}
+              </p>
+            </div>
+          </div>
+        ))}
       </main>
 
       {/* Footer */}
-      <footer className="text-center p-4 bg-blue-600 text-white mt-8">
-        <p>&copy; 2023 YourCompanyName. All rights reserved.</p>
+      <footer className="text-center p-6 bg-transparent text-white mt-8 rounded-lg shadow-xl">
+        <p className="font-medium">&copy; 2023 Smart Eval. All rights reserved.</p>
       </footer>
     </div>
   );
 }
 
 export default Home;
-
-
