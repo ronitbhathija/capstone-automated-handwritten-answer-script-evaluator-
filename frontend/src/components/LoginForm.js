@@ -4,7 +4,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 
-const LoginForm = ({ setIsLoggedIn }) => {
+function decodeBase64Url(token) {
+    let base64 = token.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(base64));
+}
+
+
+const LoginForm = ({ setIsLoggedIn, setToken }) => {
 
     const navigate = useNavigate();
 
@@ -41,11 +47,22 @@ const LoginForm = ({ setIsLoggedIn }) => {
 
         try {
             const response = await axios.post('http://localhost:4000/api/v1/login', formData);
+            // console.log(response);
+
+            const tokenPayload = decodeBase64Url(response.data.token.split(".")[1]);
+            const userRole = tokenPayload.role;
+            // console.log(userRole);
 
             if (response.status === 200) {
                 setIsLoggedIn(true);
+                setToken(response.data.token);
                 toast.success("Logged In");
-                navigate("/dashboard");
+
+                if (userRole === "instructor") {
+                    navigate("/instructor-dashboard");
+                } else {
+                    navigate("/dashboard");
+                }
             } else {
                 toast.error(response.data.message || "Error logging in");
             }

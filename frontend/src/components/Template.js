@@ -5,7 +5,7 @@ import LoginForm from './LoginForm'
 import { FcGoogle } from "react-icons/fc"
 
 
-const Template = ({ title, desc1, desc2, image, formtype, setIsLoggedIn }) => {
+const Template = ({ title, desc1, desc2, image, formtype, setIsLoggedIn, setToken }) => {
 
     // console.log(formtype)
     return (
@@ -26,7 +26,7 @@ const Template = ({ title, desc1, desc2, image, formtype, setIsLoggedIn }) => {
 
                 {formtype === "signup" ?
                     (<SignupForm setIsLoggedIn={setIsLoggedIn} />) :
-                    (<LoginForm setIsLoggedIn={setIsLoggedIn} />)}
+                    (<LoginForm setIsLoggedIn={setIsLoggedIn} setToken={setToken} />)}
 
                 <div className='flex w-full items-center my-4 gap-x-2'>
                     <div className='w-full h-[1px] bg-richblack-700'></div>

@@ -161,6 +161,7 @@ exports.extracttext = async (req, res) => {
 
         // Clean the recognized text
         text = cleanOcrOutput(text);
+        // console.log(text);
 
         return res.status(200).json({
             success: true,
@@ -185,7 +186,7 @@ exports.calculatescore = async (req, res) => {
         // console.log(keyanswer);
 
         // Path to the dummy Python script
-        const scriptPath = 'C://webtechnologies//capstone//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
+        const scriptPath = 'C://webtechnologies//capstone//newbranch//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
 
         const process = spawn('python', [scriptPath, myanswer, keyanswer]);
 

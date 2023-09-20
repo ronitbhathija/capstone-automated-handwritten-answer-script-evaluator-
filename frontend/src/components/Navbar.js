@@ -2,12 +2,33 @@ import React from 'react'
 import logo from "../assets/logo_main.png"
 import { Link } from "react-router-dom"
 import { toast } from "react-hot-toast"
+import { Navigate } from 'react-router-dom';
+import { useEffect } from 'react';
+
+function decodeBase64Url(token) {
+    let base64 = token.replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(base64));
+}
 
 
 const Navbar = (props) => {
     let isLoggedIn = props.isLoggedIn;
     let setIsLoggedIn = props.setIsLoggedIn;
+    let token = props.token;
+    let setToken = props.setToken;
 
+    let userRole;
+    if (token) {
+        const tokenPayload = decodeBase64Url(token.split(".")[1]);
+        // console.log("this is for token in navbar");
+        // console.log(tokenPayload);
+        userRole = tokenPayload.role;
+    }
+
+    // const tokenPayload = decodeBase64Url(token.split(".")[1]);
+    // const userRole = tokenPayload.role;
+
+    // const userRole = 'student'
     return (
         <div className='flex justify-between items-center w-11/12 max-w-[1160px] py-4 mx-auto'>
 
@@ -51,6 +72,7 @@ const Navbar = (props) => {
                     <Link to="/">
                         <button onClick={() => {
                             setIsLoggedIn(false);
+                            setToken(null);
                             toast.success("Logged Out");
                         }}
                             className='bg-richblack-800 text-richblack-100 py-[8px] 
@@ -59,11 +81,22 @@ const Navbar = (props) => {
                         </button>
                     </Link>
                 }
-                {isLoggedIn &&
+                {isLoggedIn && userRole === 'student' &&
                     <Link to="/dashboard">
                         <button
                             className='bg-richblack-800 text-richblack-100 py-[8px] 
                     px-[12px] rounded-[8px] border border-richblack-700'>
+                            Dashboard
+                        </button>
+                    </Link>
+                }
+
+                {
+                    isLoggedIn && userRole === 'instructor' &&
+                    <Link to="/instructor-dashboard">
+                        <button
+                            className='bg-richblack-800 text-richblack-100 py-[8px] 
+                px-[12px] rounded-[8px] border border-richblack-700'>
                             Dashboard
                         </button>
                     </Link>

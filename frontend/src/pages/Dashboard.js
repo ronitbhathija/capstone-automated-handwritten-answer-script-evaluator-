@@ -1,25 +1,36 @@
+// import React from 'react'
+
+// const Dashboard = () => {
+//   return (
+//     <div className='text-white'>
+//       student dashboard
+//     </div>
+//   )
+// }
+
+// export default Dashboard
 
 import React, { useState } from "react";
-import Item1 from "../components/Item1";
-import Item2 from "../components/Item2";
-import Item3 from "../components/Item3";
-import Item4 from "../components/Item4";
+import Item5 from "../components/Item5";
+import Item6 from "../components/Item6";
+import Item7 from "../components/Item7";
+import Item8 from "../components/Item8";
 
 const Dashboard = ({ isLoggedIn }) => {
-  const [activeItem, setActiveItem] = useState("Item1");
+  const [activeItem, setActiveItem] = useState("Item5");
 
   const renderComponent = () => {
     switch (activeItem) {
-      case "Item1":
-        return <Item1 />;
-      case "Item2":
-        return <Item2 />;
-      case "Item3":
-        return <Item3 />;
-      case "Item4":
-        return <Item4 />;
+      case "Item5":
+        return <Item5 />;
+      case "Item6":
+        return <Item6 />;
+      case "Item7":
+        return <Item7 />;
+      case "Item8":
+        return <Item8 />;
       default:
-        return <Item1 />;
+        return <Item5 />;
     }
   };
 
@@ -31,28 +42,28 @@ const Dashboard = ({ isLoggedIn }) => {
         <h2 className="text-3xl font-extrabold mb-8 text-white">Menu</h2>
         <ul>
           <li
-            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item1")}`}
-            onClick={() => setActiveItem("Item1")}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item5")}`}
+            onClick={() => setActiveItem("Item5")}
           >
-            📌 Item1
+            📌 Item5
           </li>
           <li
-            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item2")}`}
-            onClick={() => setActiveItem("Item2")}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item6")}`}
+            onClick={() => setActiveItem("Item6")}
           >
-            📘 Item2
+            📘 Item6
           </li>
           <li
-            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item3")}`}
-            onClick={() => setActiveItem("Item3")}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item7")}`}
+            onClick={() => setActiveItem("Item7")}
           >
-            📊 Item3
+            📊 Item7
           </li>
           <li
-            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item4")}`}
-            onClick={() => setActiveItem("Item4")}
+            className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item8")}`}
+            onClick={() => setActiveItem("Item8")}
           >
-            🖼️ Item4
+            🖼️ Item8
           </li>
         </ul>
       </div>
@@ -62,3 +73,4 @@ const Dashboard = ({ isLoggedIn }) => {
 };
 
 export default Dashboard;
+
