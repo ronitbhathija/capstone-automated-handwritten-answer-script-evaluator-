@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
+const reviews = require("../models/Reviews");
 const jwt = require("jsonwebtoken");
 
 const { spawn } = require('child_process');
@@ -17,6 +18,38 @@ const config = {
 
 
 require("dotenv").config();
+
+exports.getallreviews = async (req, res) => {
+    try {
+        const data = await reviews.find();
+        res.status(200).json(data);
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "could not fetch all reviews"
+        })
+    }
+}
+
+exports.submitreview = async (req, res) => {
+    try {
+        const { firstname, lastname, role, review } = req.body;
+
+        const rev = await reviews.create({
+            firstname, lastname, role, review
+        })
+
+        return res.status(200).json({
+            success: true,
+            message: 'review submitted',
+        })
+    } catch (err) {
+        return res.status(500).json({
+            success: false,
+            message: "Cannot submit review try again later"
+        })
+    }
+}
 
 
 exports.signup = async (req, res) => {
@@ -64,6 +97,9 @@ exports.signup = async (req, res) => {
         })
     }
 }
+
+
+
 
 //login
 exports.login = async (req, res) => {
@@ -161,7 +197,7 @@ exports.extracttext = async (req, res) => {
 
         // Clean the recognized text
         text = cleanOcrOutput(text);
-        // console.log(text);
+        console.log(text);
 
         return res.status(200).json({
             success: true,
@@ -176,6 +212,7 @@ exports.extracttext = async (req, res) => {
         });
     }
 }
+
 
 
 exports.calculatescore = async (req, res) => {
