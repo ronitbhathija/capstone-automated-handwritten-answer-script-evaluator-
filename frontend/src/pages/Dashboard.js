@@ -16,13 +16,23 @@ import Item6 from "../components/Item6";
 import Item7 from "../components/Item7";
 import Item8 from "../components/Item8";
 
-const Dashboard = ({ isLoggedIn }) => {
+function decodeBase64Url(token) {
+  let base64 = token.replace(/-/g, '+').replace(/_/g, '/');
+  return JSON.parse(atob(base64));
+}
+
+
+const Dashboard = ({ isLoggedIn, token }) => {
   const [activeItem, setActiveItem] = useState("Item5");
+
+  const tokenPayload = decodeBase64Url(token.split(".")[1]);
+  console.log("test1")
+  console.log(tokenPayload)
 
   const renderComponent = () => {
     switch (activeItem) {
       case "Item5":
-        return <Item5 />;
+        return <Item5 tokenPayload={tokenPayload} />;
       case "Item6":
         return <Item6 />;
       case "Item7":
@@ -35,6 +45,9 @@ const Dashboard = ({ isLoggedIn }) => {
   };
 
   const isActive = (item) => (activeItem === item ? "bg-gray-700 text-white" : "text-gray-400 hover:text-white");
+
+
+
 
   return (
     <div className="flex h-full space-x-4">

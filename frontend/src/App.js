@@ -35,13 +35,13 @@ function App() {
 
         <Route path="/instructor-dashboard" element={
           <PrivateRoute isLoggedIn={isLoggedIn}>
-            <InstructorDashboard />
+            <InstructorDashboard token={token} />
           </PrivateRoute>
         } />
 
         <Route path="/dashboard" element={
           <PrivateRoute isLoggedIn={isLoggedIn}>
-            <Dashboard />
+            <Dashboard token={token} />
           </PrivateRoute>
 
         } />

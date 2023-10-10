@@ -17,15 +17,22 @@ import Item2 from "../components/Item2";
 import Item3 from "../components/Item3";
 import Item4 from "../components/Item4";
 
-const InstructorDashboard = ({ isLoggedIn }) => {
+const InstructorDashboard = ({ isLoggedIn, token }) => {
     const [activeItem, setActiveItem] = useState("Item1");
+
+    function decodeBase64Url(token) {
+        let base64 = token.replace(/-/g, '+').replace(/_/g, '/');
+        return JSON.parse(atob(base64));
+    }
+
+    const tokenPayload = decodeBase64Url(token.split(".")[1]);
 
     const renderComponent = () => {
         switch (activeItem) {
             case "Item1":
                 return <Item1 />;
             case "Item2":
-                return <Item2 />;
+                return <Item2 tokenPayload={tokenPayload} />;
             case "Item3":
                 return <Item3 />;
             case "Item4":

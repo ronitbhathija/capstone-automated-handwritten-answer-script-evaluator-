@@ -80,7 +80,7 @@ const SignupForm = ({ setIsLoggedIn }) => {
             if (response.status === 200) {
                 setIsLoggedIn(true);
                 toast.success("Account Created");
-                navigate("/dashboard");
+                navigate("/login");
             } else {
                 toast.error(response.data.message || "Error signing up");
             }
