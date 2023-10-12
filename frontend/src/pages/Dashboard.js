@@ -33,7 +33,7 @@ const Dashboard = ({ isLoggedIn, token }) => {
       case "Item5":
         return <Item5 tokenPayload={tokenPayload} />;
       case "Item6":
-        return <Item6 />;
+        return <Item6 tokenPayload={tokenPayload} />;
       case "Item7":
         return <Item7 />;
       case "Item8":
