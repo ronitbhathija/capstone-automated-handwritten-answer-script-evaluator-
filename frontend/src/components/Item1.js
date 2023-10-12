@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const Item1 = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [answer, setAnswer] = useState('');
   const [keyanswer, setkeyanswer] = useState('');
+
   const [percentage, setpercentage] = useState(0);
+  const [student_id, setStudentId] = useState('');
+  const [paper_id, setPaperId] = useState('');
+
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -26,6 +30,7 @@ const Item1 = () => {
         console.error('Error occurred:', error);
       }
 
+
       const finalanswers = {
         myanswer: answer,
         keyanswer: keyanswer
@@ -42,9 +47,32 @@ const Item1 = () => {
 
   }
 
+  useEffect(() => { // Assuming the initial value of percentage is 0
+    const dataToSend = {
+      student_id: student_id,
+      paper_id: paper_id,
+      score: percentage.data
+    };
+    try {
+      axios.post('http://localhost:4000/api/v1/storescore', dataToSend);
+    } catch (error) {
+      console.error('Error sending data to API:', error);
+    }
+  }, [percentage]); // useEffect will run whenever `percentage` changes
+
   return (
     <div className='flex flex-col justify-center items-center space-y-6 p-8 bg-gray-800'>
       <h1 className='text-4xl font-bold text-white mb-6'>Calculate Score</h1>
+      <label>
+        Student ID:
+        <input type="text" value={student_id} onChange={(e) => setStudentId(e.target.value)} />
+      </label>
+      <br />
+      <label>
+        Paper ID:
+        <input type="text" value={paper_id} onChange={(e) => setPaperId(e.target.value)} />
+      </label>
+      <br />
       <div className='space-y-2'>
         <label className='block text-sm font-medium text-white mb-2'>Upload Answer Sheet:</label>
         <input type='file' onChange={handleFileChange} className='p-2 border border-white rounded-md bg-gray-700 text-white' />
@@ -62,3 +90,7 @@ const Item1 = () => {
 }
 
 export default Item1;
+
+
+
+

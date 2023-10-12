@@ -1,6 +1,7 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const reviews = require("../models/Reviews");
+const Marks = require("../models/marks");
 const jwt = require("jsonwebtoken");
 
 const { spawn } = require('child_process');
@@ -30,6 +31,32 @@ exports.getallreviews = async (req, res) => {
         })
     }
 }
+
+exports.storescore = async (req, res) => {
+    const { student_id, paper_id, score } = req.body;
+
+    try {
+        // Check if student_id is valid
+        const userExists = await User.findById(student_id);
+        if (!userExists) {
+            return res.status(400).json({ success: false, message: "Invalid student ID." });
+        }
+
+        // Create a new marks document
+        const newMark = new Marks({
+            id: student_id,
+            paper_id: paper_id,
+            marks: score
+        });
+
+        await newMark.save();
+
+        return res.status(201).json({ success: true, message: "Score stored successfully." });
+
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Server error.", error: error.message });
+    }
+};
 
 exports.submitreview = async (req, res) => {
     try {

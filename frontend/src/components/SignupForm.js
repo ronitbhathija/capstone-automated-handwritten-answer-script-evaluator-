@@ -78,9 +78,9 @@ const SignupForm = ({ setIsLoggedIn }) => {
             const response = await axios.post('http://localhost:4000/api/v1/signup', accountData);
 
             if (response.status === 200) {
-                setIsLoggedIn(true);
+                // setIsLoggedIn(true);
                 toast.success("Account Created");
-                navigate("/login");
+                navigate("/");
             } else {
                 toast.error(response.data.message || "Error signing up");
             }
