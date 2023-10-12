@@ -47,12 +47,16 @@ const Item6 = (props) => {
 
     return (
         <div>
-            <select onChange={handlePaperIdChange} style={{ position: 'absolute', top: '10px', right: '10px' }}>
+            <select onChange={handlePaperIdChange} style={{ top: '5px', right: '5px' }}>
                 <option value="">Select Paper ID</option>
                 {data.map(item => (
                     <option key={item.paper_id} value={item.paper_id}>{item.paper_id}</option>
                 ))}
             </select>
+            <br />
+            <br />
+            <br />
+            <br />
             {selectedPaperId && (
                 <>
                     <BarChart width={600} height={300} data={graphData}>

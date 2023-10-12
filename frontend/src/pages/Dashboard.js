@@ -34,8 +34,8 @@ const Dashboard = ({ isLoggedIn, token }) => {
         return <Item5 tokenPayload={tokenPayload} />;
       case "Item6":
         return <Item6 tokenPayload={tokenPayload} />;
-      case "Item7":
-        return <Item7 />;
+      // case "Item7":
+      //   return <Item7 />;
       case "Item8":
         return <Item8 />;
       default:
@@ -57,25 +57,25 @@ const Dashboard = ({ isLoggedIn, token }) => {
             className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item5")}`}
             onClick={() => setActiveItem("Item5")}
           >
-            📌 Item5
+            📌 Profile
           </li>
           <li
             className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item6")}`}
             onClick={() => setActiveItem("Item6")}
           >
-            📘 Item6
+            📘 Results
           </li>
-          <li
+          {/* <li
             className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item7")}`}
             onClick={() => setActiveItem("Item7")}
           >
             📊 Item7
-          </li>
+          </li> */}
           <li
             className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item8")}`}
             onClick={() => setActiveItem("Item8")}
           >
-            🖼️ Item8
+            🖼️ submit a review
           </li>
         </ul>
       </div>

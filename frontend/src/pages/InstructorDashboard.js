@@ -53,25 +53,25 @@ const InstructorDashboard = ({ isLoggedIn, token }) => {
                         className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item1")}`}
                         onClick={() => setActiveItem("Item1")}
                     >
-                        📌 Item1
+                        📌 Calculate Score
                     </li>
                     <li
                         className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item2")}`}
                         onClick={() => setActiveItem("Item2")}
                     >
-                        📘 Item2
+                        📘 Profile
                     </li>
                     <li
                         className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item3")}`}
                         onClick={() => setActiveItem("Item3")}
                     >
-                        📊 Item3
+                        📊 Results
                     </li>
                     <li
                         className={`mb-8 px-6 py-4 cursor-pointer rounded transition-all ${isActive("Item4")}`}
                         onClick={() => setActiveItem("Item4")}
                     >
-                        🖼️ Item4
+                        🖼️ Submit a review
                     </li>
                 </ul>
             </div>
