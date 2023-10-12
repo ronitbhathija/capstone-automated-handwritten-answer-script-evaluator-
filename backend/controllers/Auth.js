@@ -32,6 +32,26 @@ exports.getallreviews = async (req, res) => {
     }
 }
 
+exports.getallmarks = async (req, res) => {
+    try {
+        // Fetch all records from the 'marks' collection
+        const allMarks = await Marks.find({});
+
+        // Send the fetched records in the response
+        return res.status(200).json({
+            success: true,
+            data: allMarks
+        });
+    } catch (error) {
+        // Handle any errors that might occur
+        console.error("Failed to fetch marks:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Server error."
+        });
+    }
+};
+
 exports.storescore = async (req, res) => {
     const { student_id, paper_id, score } = req.body;
 

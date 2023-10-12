@@ -6,7 +6,7 @@ const storage = multer.memoryStorage();  // Store the file in memory
 const upload = multer({ storage: storage });
 
 
-const { login, signup, extracttext, calculatescore, submitreview, getallreviews, storescore } = require("../controllers/Auth");
+const { login, signup, extracttext, calculatescore, submitreview, getallreviews, storescore, getallmarks } = require("../controllers/Auth");
 
 const { auth, isstudent, isinstructor } = require("../middlewares/auth"); //middlewares
 
@@ -19,6 +19,7 @@ router.post("/submitreview", submitreview);
 
 router.get("/getallreviews", getallreviews);
 router.post("/storescore", storescore);
+router.get("/getallmarks", getallmarks);
 
 //protected routes
 router.get("/student", auth, isstudent, (req, res) => {

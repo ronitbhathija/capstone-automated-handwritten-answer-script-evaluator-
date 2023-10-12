@@ -26,8 +26,7 @@ const Dashboard = ({ isLoggedIn, token }) => {
   const [activeItem, setActiveItem] = useState("Item5");
 
   const tokenPayload = decodeBase64Url(token.split(".")[1]);
-  console.log("test1")
-  console.log(tokenPayload)
+  // console.log(tokenPayload)
 
   const renderComponent = () => {
     switch (activeItem) {
