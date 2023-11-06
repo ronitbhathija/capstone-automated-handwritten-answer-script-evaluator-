@@ -4,18 +4,52 @@ import axios from 'axios';
 const Item1 = () => {
   const [uploadedFile, setUploadedFile] = useState(null);
   const [answer, setAnswer] = useState('');
-  const [keyanswer, setkeyanswer] = useState('');
+  const [keyanswer, setKeyAnswer] = useState('');
 
-  const [percentage, setpercentage] = useState(0);
+  const [percentage, setPercentage] = useState(0);
   const [student_id, setStudentId] = useState('');
   const [paper_id, setPaperId] = useState('');
 
+  const [items, setItems] = useState([]); // Array to store added answers
+  const [equations, setEquations] = useState([]); // Array to store added equations
+
+  const [questionNumber, setQuestionNumber] = useState('');
+  const [answerText, setAnswerText] = useState('');
+  const [maxMarks, setMaxMarks] = useState('');
+
+  const [equationQuestionNumber, setEquationQuestionNumber] = useState('');
+  const [equationText, setEquationText] = useState('');
+  const [equationMaxMarks, setEquationMaxMarks] = useState('');
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       setUploadedFile(file);
     }
+  }
+
+  const handleAddAnswer = () => {
+    const newItem = [questionNumber, answerText, maxMarks];
+    setItems([...items, newItem]);
+    clearAnswerFields();
+  }
+
+  const handleAddEquation = () => {
+    const newEquation = [equationQuestionNumber, equationText, equationMaxMarks];
+    setEquations([...equations, newEquation]);
+    clearEquationFields();
+  }
+
+  const handleDeleteAnswer = (index) => {
+    const updatedItems = [...items];
+    updatedItems.splice(index, 1);
+    setItems(updatedItems);
+  }
+
+  const handleDeleteEquation = (index) => {
+    const updatedEquations = [...equations];
+    updatedEquations.splice(index, 1);
+    setEquations(updatedEquations);
   }
 
   const handleCalculateScore = async () => {
@@ -30,35 +64,45 @@ const Item1 = () => {
         console.error('Error occurred:', error);
       }
 
-
-      const finalanswers = {
+      const finalAnswers = {
         myanswer: answer,
-        keyanswer: keyanswer
-      }
+        items: items,
+        equations: equations,
+      };
 
       try {
-        const response = await axios.post('http://localhost:4000/api/v1/calculatescore', finalanswers);
-        setpercentage(response.data);
+        const response = await axios.post('http://localhost:4000/api/v1/calculatescore', finalAnswers);
+        setPercentage(response.data);
       } catch (err) {
         console.error('error', err);
       }
     }
-
-
   }
 
-  useEffect(() => { // Assuming the initial value of percentage is 0
+  useEffect(() => {
     const dataToSend = {
       student_id: student_id,
       paper_id: paper_id,
-      score: percentage.data
+      score: percentage.data,
     };
     try {
       axios.post('http://localhost:4000/api/v1/storescore', dataToSend);
     } catch (error) {
       console.error('Error sending data to API:', error);
     }
-  }, [percentage]); // useEffect will run whenever `percentage` changes
+  }, [percentage]);
+
+  const clearAnswerFields = () => {
+    setQuestionNumber('');
+    setAnswerText('');
+    setMaxMarks('');
+  }
+
+  const clearEquationFields = () => {
+    setEquationQuestionNumber('');
+    setEquationText('');
+    setEquationMaxMarks('');
+  }
 
   return (
     <div className='flex flex-col justify-center items-center space-y-6 p-8 bg-gray-800'>
@@ -78,19 +122,79 @@ const Item1 = () => {
         <input type='file' onChange={handleFileChange} className='p-2 border border-white rounded-md bg-gray-700 text-white' />
       </div>
       <div className='space-y-2'>
-        <label className='block text-sm font-medium text-white mb-2'>Enter Answer Key:</label>
-        <textarea rows='10' cols='1000' value={keyanswer} onChange={e => setkeyanswer(e.target.value)} className='w-full p-2 border border-white rounded-md bg-gray-700 text-white' placeholder='Enter your answer key here'></textarea>
+        <label className='block text-sm font-medium text-white mb-2'>Add Answer:</label>
+        <input
+          type='text'
+          placeholder='Question Number'
+          value={questionNumber}
+          onChange={e => setQuestionNumber(e.target.value)}
+        />
+        <input
+          type='text'
+          placeholder='Enter Answer'
+          value={answerText}
+          onChange={e => setAnswerText(e.target.value)}
+        />
+        <input
+          type='text'
+          placeholder='Max Marks'
+          value={maxMarks}
+          onChange={e => setMaxMarks(e.target.value)}
+        />
+        <button onClick={handleAddAnswer} className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md'>
+          Add Answer
+        </button>
       </div>
-      <button onClick={handleCalculateScore} className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md'>
+      <div className='space-y-2'>
+        <label className='block text-sm font-medium text-white mb-2'>Add Equation:</label>
+        <input
+          type='text'
+          placeholder='Question Number'
+          value={equationQuestionNumber}
+          onChange={e => setEquationQuestionNumber(e.target.value)}
+        />
+        <input
+          type='text'
+          placeholder='Enter Equation'
+          value={equationText}
+          onChange={e => setEquationText(e.target.value)}
+        />
+        <input
+          type='text'
+          placeholder='Max Marks'
+          value={equationMaxMarks}
+          onChange={e => setEquationMaxMarks(e.target.value)}
+        />
+        <button onClick={handleAddEquation} className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md'>
+          Add Equation
+        </button>
+      </div>
+      <button onClick={handleCalculateScore} className='bg-blue-500 hover-bg-blue-600 text-white font-semibold py-2 px-4 rounded-md'>
         Calculate Score
       </button>
       <div>{percentage.data}</div>
+      <div>
+        <h2>Added Answers:</h2>
+        <ul>
+          {items.map((item, index) => (
+            <li key={index}>
+              Question {item[0]}: {item[1]} (Max Marks: {item[2]})
+              <button onClick={() => handleDeleteAnswer(index)} className='text-red-500 ml-2'>Delete</button>
+            </li>
+          ))}
+        </ul>
+        <h2>Added Equations:</h2>
+        <ul>
+          {equations.map((equation, index) => (
+            <li key={index}>
+              Question {equation[0]}: {equation[1]} (Max Marks: {equation[2]})
+              <button onClick={() => handleDeleteEquation(index)} className='text-red-500 ml-2'>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
 
 export default Item1;
-
-
-
-

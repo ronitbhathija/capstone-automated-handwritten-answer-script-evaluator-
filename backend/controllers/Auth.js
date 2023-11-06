@@ -318,15 +318,16 @@ function cleanOcrOutput(text) {
 
 exports.calculatescore = async (req, res) => {
     try {
-        const { myanswer, keyanswer } = req.body;
+        const { myanswer, items, equations } = req.body;
 
         // console.log(myanswer);
-        console.log(keyanswer);
 
+        console.log(items)
+        console.log(equations)
 
-        const scriptPath = 'C://webtechnologies//capstone//newbranch//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
+        const scriptPath = 'C://webtechnologies//capstone//finalesabranch//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
 
-        const process = spawn('python', [scriptPath, myanswer, keyanswer]);
+        const process = spawn('python', [scriptPath, myanswer, items, equations]);
 
 
         let dataString = '';

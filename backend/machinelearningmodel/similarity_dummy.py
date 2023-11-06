@@ -39,12 +39,13 @@ def predict_similarity(text1, text2):
 
 
 if __name__ == "__main__":
-    sentence1 = sys.argv[1]
-    sentence2 = sys.argv[2]
+    studentanswer = sys.argv[1]
+    keyanswerarrayofarray = sys.argv[2]
+    keyequationarrayofarray = sys.argv[3]
 
 
-    similarity = predict_similarity(sentence1, sentence2)
-    print(similarity)
+    # similarity = predict_similarity(sentence1, sentence2)
+    print(20)
 
 
 
