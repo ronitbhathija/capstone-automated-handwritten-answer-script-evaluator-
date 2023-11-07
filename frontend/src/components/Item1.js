@@ -128,18 +128,21 @@ const Item1 = () => {
           placeholder='Question Number'
           value={questionNumber}
           onChange={e => setQuestionNumber(e.target.value)}
+          style={{ width: '25%', height: '90px', padding: '8px', fontSize: '16px' }}
         />
         <input
           type='text'
           placeholder='Enter Answer'
           value={answerText}
           onChange={e => setAnswerText(e.target.value)}
+          style={{ width: '40%', height: '90px', padding: '8px', fontSize: '16px' }}
         />
         <input
           type='text'
           placeholder='Max Marks'
           value={maxMarks}
           onChange={e => setMaxMarks(e.target.value)}
+          style={{ width: '35%', height: '90px', padding: '8px', fontSize: '16px' }}
         />
         <button onClick={handleAddAnswer} className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md'>
           Add Answer
@@ -152,18 +155,21 @@ const Item1 = () => {
           placeholder='Question Number'
           value={equationQuestionNumber}
           onChange={e => setEquationQuestionNumber(e.target.value)}
+          style={{ width: '25%', height: '90px', padding: '8px', fontSize: '16px' }}
         />
         <input
           type='text'
           placeholder='Enter Equation'
           value={equationText}
           onChange={e => setEquationText(e.target.value)}
+          style={{ width: '40%', height: '90px', padding: '8px', fontSize: '16px' }}
         />
         <input
           type='text'
           placeholder='Max Marks'
           value={equationMaxMarks}
           onChange={e => setEquationMaxMarks(e.target.value)}
+          style={{ width: '35%', height: '90px', padding: '8px', fontSize: '16px' }}
         />
         <button onClick={handleAddEquation} className='bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md'>
           Add Equation
