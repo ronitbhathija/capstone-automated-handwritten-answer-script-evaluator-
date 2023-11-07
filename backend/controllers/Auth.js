@@ -325,9 +325,12 @@ exports.calculatescore = async (req, res) => {
         console.log(items)
         console.log(equations)
 
+        const itemstosend = items.map(row => row.join('\t')).join('\n');
+        const equationstosend = equations.map(row => row.join('\t')).join('\n');
+
         const scriptPath = 'C://webtechnologies//capstone//finalesabranch//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
 
-        const process = spawn('python', [scriptPath, myanswer, items, equations]);
+        const process = spawn('python', [scriptPath, myanswer, itemstosend, equationstosend]);
 
 
         let dataString = '';
