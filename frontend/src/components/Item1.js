@@ -52,6 +52,47 @@ const Item1 = () => {
     setEquations(updatedEquations);
   }
 
+  // const handleCalculateScore = async () => {
+  //   if (uploadedFile) {
+  //     const formData = new FormData();
+  //     formData.append('image', uploadedFile);
+
+  //     try {
+  //       const response = await axios.post('http://localhost:4000/api/v1/extracttext', formData);
+  //       setAnswer(response.data.data);
+  //     } catch (error) {
+  //       console.error('Error occurred:', error);
+  //     }
+
+  //     const finalAnswers = {
+  //       myanswer: answer,
+  //       items: items,
+  //       equations: equations,
+  //     };
+
+  //     try {
+  //       const response = await axios.post('http://localhost:4000/api/v1/calculatescore', finalAnswers);
+  //       console.log(response);
+  //       setPercentage(response.data);
+
+  //       // const dataToSend = {
+  //       //   student_id: student_id,
+  //       //   paper_id: paper_id,
+  //       //   score: response.data,
+  //       // };
+
+  //       // try {
+  //       //   axios.post('http://localhost:4000/api/v1/storescore', dataToSend);
+  //       // } catch (error) {
+  //       //   console.error('Error sending data to API:', error);
+  //       // }
+  //     } catch (err) {
+  //       console.error('error', err);
+  //     }
+  //   }
+  // }
+
+
   const handleCalculateScore = async () => {
     if (uploadedFile) {
       const formData = new FormData();
@@ -60,37 +101,58 @@ const Item1 = () => {
       try {
         const response = await axios.post('http://localhost:4000/api/v1/extracttext', formData);
         setAnswer(response.data.data);
+
+        const finalAnswers = {
+          myanswer: response.data.data,
+          items: items,
+          equations: equations,
+        };
+
+        try {
+          const scoreResponse = await axios.post('http://localhost:4000/api/v1/calculatescore', finalAnswers);
+          console.log(scoreResponse);
+
+          if (scoreResponse.data.success) {
+            const dataToSend = {
+              student_id: student_id,
+              paper_id: paper_id,
+              score: scoreResponse.data.data, // Extracting the numeric value
+            };
+
+            try {
+              const storeScoreResponse = await axios.post('http://localhost:4000/api/v1/storescore', dataToSend);
+              console.log(storeScoreResponse);
+              // Additional handling if needed
+            } catch (storeScoreError) {
+              console.error('Error storing score:', storeScoreError);
+            }
+          } else {
+            console.error('Error calculating score:', scoreResponse.data.message);
+          }
+
+        } catch (scoreError) {
+          console.error('Error calculating score:', scoreError);
+        }
+
       } catch (error) {
         console.error('Error occurred:', error);
       }
-
-      const finalAnswers = {
-        myanswer: answer,
-        items: items,
-        equations: equations,
-      };
-
-      try {
-        const response = await axios.post('http://localhost:4000/api/v1/calculatescore', finalAnswers);
-        setPercentage(response.data);
-      } catch (err) {
-        console.error('error', err);
-      }
     }
-  }
+  };
 
-  useEffect(() => {
-    const dataToSend = {
-      student_id: student_id,
-      paper_id: paper_id,
-      score: percentage.data,
-    };
-    try {
-      axios.post('http://localhost:4000/api/v1/storescore', dataToSend);
-    } catch (error) {
-      console.error('Error sending data to API:', error);
-    }
-  }, [percentage]);
+
+  // useEffect(() => {
+  //   const dataToSend = {
+  //     student_id: student_id,
+  //     paper_id: paper_id,
+  //     score: percentage.data,
+  //   };
+  //   try {
+  //     axios.post('http://localhost:4000/api/v1/storescore', dataToSend);
+  //   } catch (error) {
+  //     console.error('Error sending data to API:', error);
+  //   }
+  // }, [percentage]);
 
   const clearAnswerFields = () => {
     setQuestionNumber('');
