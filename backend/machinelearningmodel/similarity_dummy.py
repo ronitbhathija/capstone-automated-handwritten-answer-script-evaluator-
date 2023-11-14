@@ -71,7 +71,7 @@ def calculate_scores_answers(question_array_1, question_dict_2):
             else:
                 answer_scores[question_num] = (float(max_marks) * adjusted_marks)
 
-            # print(f"Question {question_num}: Max Marks = {max_marks}, Similarity Score = {similarity_score}, Adjusted Marks = {adjusted_marks}")
+            print(f"Question {question_num}: Max Marks = {max_marks}, Similarity Score = {similarity_score}, Adjusted Marks = {adjusted_marks}")
 
     return answer_scores
 
@@ -110,5 +110,6 @@ if __name__ == "__main__":
     answer_scores = calculate_scores_answers(keyanswerarrayofarray, stud_ans_dict)
         
     total_marks = sum(answer_scores.values())
-    print(round(total_marks))
+    # print(round(total_marks))
 
+    print(f"Total Marks: {total_marks}")

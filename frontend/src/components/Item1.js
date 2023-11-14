@@ -21,6 +21,8 @@ const Item1 = () => {
   const [equationText, setEquationText] = useState('');
   const [equationMaxMarks, setEquationMaxMarks] = useState('');
 
+  const [output, setOutput] = useState('');
+
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -110,13 +112,17 @@ const Item1 = () => {
 
         try {
           const scoreResponse = await axios.post('http://localhost:4000/api/v1/calculatescore', finalAnswers);
-          console.log(scoreResponse);
+          // console.log(scoreResponse);
+          setPercentage(scoreResponse.data.data.percentage)
+          setOutput(scoreResponse.data.data.output)
+          console.log('this is test')
+          console.log(scoreResponse.data.data.percentage)
 
           if (scoreResponse.data.success) {
             const dataToSend = {
               student_id: student_id,
               paper_id: paper_id,
-              score: scoreResponse.data.data, // Extracting the numeric value
+              score: scoreResponse.data.data.percentage, // Extracting the numeric value
             };
 
             try {
@@ -126,9 +132,13 @@ const Item1 = () => {
             } catch (storeScoreError) {
               console.error('Error storing score:', storeScoreError);
             }
+
+
           } else {
             console.error('Error calculating score:', scoreResponse.data.message);
           }
+
+
 
         } catch (scoreError) {
           console.error('Error calculating score:', scoreError);
@@ -240,7 +250,7 @@ const Item1 = () => {
       <button onClick={handleCalculateScore} className='bg-blue-500 hover-bg-blue-600 text-white font-semibold py-2 px-4 rounded-md'>
         Calculate Score
       </button>
-      <div>{percentage.data}</div>
+      <div>{percentage}</div>
       <div>
         <h2>Added Answers:</h2>
         <ul>
@@ -261,6 +271,22 @@ const Item1 = () => {
           ))}
         </ul>
       </div>
+      <div className="bg-gray-200 p-4 rounded-md shadow-md">
+        {output.split('Question').map((question, index) => {
+          if (question.trim() === '') return null; // Skip empty strings
+          const parts = question.split(',').map(part => part.trim());
+
+          return (
+            <div key={index} className="mb-4">
+              <p className="font-bold text-lg">{`Question ${index}:`}</p>
+              {parts.map((part, i) => (
+                <p key={i}>{part}</p>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+
     </div>
   );
 }

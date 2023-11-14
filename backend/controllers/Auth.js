@@ -316,6 +316,54 @@ function cleanOcrOutput(text) {
 
 
 
+// exports.calculatescore = async (req, res) => {
+//     try {
+//         const { myanswer, items, equations } = req.body;
+
+//         // console.log(myanswer);
+
+//         console.log(items)
+//         console.log(equations)
+
+//         const itemstosend = items.map(row => row.join('\t')).join('\n');
+//         const equationstosend = equations.map(row => row.join('\t')).join('\n');
+
+//         const scriptPath = 'C://webtechnologies//capstone//1//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
+
+//         const process = spawn('python', [scriptPath, myanswer, itemstosend, equationstosend]);
+
+
+//         let dataString = '';
+//         process.stdout.on('data', (data) => {
+//             dataString += data.toString();
+//         });
+
+
+//         process.stdout.on('end', () => {
+//             return res.status(200).json({
+//                 success: true,
+//                 data: parseFloat(dataString.trim())
+//             });
+//         });
+
+
+//         process.stderr.on('data', (data) => {
+//             console.error(`Python error: ${data}`);
+//             return res.status(500).json({
+//                 success: false,
+//                 message: 'Error processing similarity'
+//             });
+//         });
+
+//     } catch (err) {
+//         console.log(err);
+//         return res.status(500).json({
+//             success: false,
+//             message: 'Error in calculating score'
+//         });
+//     }
+// }
+
 exports.calculatescore = async (req, res) => {
     try {
         const { myanswer, items, equations } = req.body;
@@ -328,7 +376,7 @@ exports.calculatescore = async (req, res) => {
         const itemstosend = items.map(row => row.join('\t')).join('\n');
         const equationstosend = equations.map(row => row.join('\t')).join('\n');
 
-        const scriptPath = 'C://webtechnologies//capstone//1//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
+        const scriptPath = 'C://webtechnologies//capstone//latest//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
 
         const process = spawn('python', [scriptPath, myanswer, itemstosend, equationstosend]);
 
@@ -340,9 +388,17 @@ exports.calculatescore = async (req, res) => {
 
 
         process.stdout.on('end', () => {
+            const lines = dataString.split('\n');
+            const outputLines = lines.filter(line => line.trim() !== '');
+            const responsetotalsumstring = outputLines.pop();
+            const parts = responsetotalsumstring.split(':');
+            const totalMarksValue = parts[1].trim();
             return res.status(200).json({
                 success: true,
-                data: parseFloat(dataString.trim())
+                data: {
+                    percentage: parseFloat(totalMarksValue),
+                    output: outputLines.join('\n')
+                }
             });
         });
 
@@ -363,6 +419,7 @@ exports.calculatescore = async (req, res) => {
         });
     }
 }
+
 
 
 
