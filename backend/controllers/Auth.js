@@ -376,7 +376,8 @@ exports.calculatescore = async (req, res) => {
         const itemstosend = items.map(row => row.join('\t')).join('\n');
         const equationstosend = equations.map(row => row.join('\t')).join('\n');
 
-        const scriptPath = 'C://webtechnologies//capstone//latest//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
+        const scriptPath = 'C://webtechnologies//capstone//1//capstone-automated-handwritten-answer-script-evaluator-//backend//machinelearningmodel//similarity_dummy.py';
+
 
         const process = spawn('python', [scriptPath, myanswer, itemstosend, equationstosend]);
 
